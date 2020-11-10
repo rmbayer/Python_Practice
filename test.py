@@ -17,16 +17,27 @@ class Game:
                 #play a hand
                 self.cpu.throw()
                 self.human.throw()
-            # who won the hand
-            # rock beats scissors
-            # scissors beats paper
-            # paper beats rock
-            # there can be a tie
+            self.compare_hands()
+                
+                
+        print(f"{self.human} Score: {self.human.wins}")
+        print(f"{self.cpu} Score: {self.cpu.wins}")
+
             
     def compare_hands(self):
         #return human or CPU
+        print("CPU threw " + self.cpu.hand)
         if self.human == self.cpu:
-            #draw
+            print("Draw")
+        elif self.human < self.cpu:
+            print("CPU Wins")
+            self.cpu += 1
+        elif self.human > self.cpu:
+            print("Human Won")
+            self.human += 1
+        else:
+            print("TERRIBLE ERROR")
+
             
         # Figure out who won
     
@@ -52,35 +63,70 @@ class Player:
             
     
     def __eq__(self, other):
+        #Did we draw
         return self.hand == other.hand
 
-    def __le__(self, other):
-        pass
+
+    def __lt__(self, other):
+        #Did we lose
+        # I throw rock, cpu thros paper
+        # I throw paper, cpu throws scissors
+        if (self.hand == "Rock" and other.hand == "Paper" or
+            self.hand == "Scissors" and other.hand =="Rock" or
+            self.hand == "Paper" and other.hand == "Scissors"):
+            return True
+        else:
+            return False
+        
 
     def __gt__(self, other):
-        pass
+        # Did we Win
+        if (other.hand == "Rock" and self.hand == "Paper" or
+            other.hand == "Scissors" and self.hand =="Rock" or
+            other.hand == "Paper" and self.hand == "Scissors"):
+            return True
+        else:
+            return False
+        
+    def __add__(self, other):
+        self.wins += other
+        return self
+
 
     def __repr__(self):
         return f"{self.name} has won {self.wins} times"
 
     def __str__(self):
         return self.name
+    
+    
 
 
-def my_decorator(func):
-    def wrapper():
-        print("Something is happening before the function is called.")
-        x = list(func())
-        print("Something is happening after the function is called.")
-        return x
+def main():
+    game = Game()
+    game.run()
 
-    return wrapper
 
-@my_decorator
-def say_whee():
-    return ("Whee!")
+if __name__ == '__main__':
+    main()
 
-print(say_whee())
+
+
+
+# def my_decorator(func):
+#     def wrapper():
+#         print("Something is happening before the function is called.")
+#         x = list(func())
+#         print("Something is happening after the function is called.")
+#         return x
+
+#     return wrapper
+
+# @my_decorator
+# def say_whee():
+#     return ("Whee!")
+
+# print(say_whee())
 
 # def main():
 #     game = Game()
@@ -91,15 +137,6 @@ print(say_whee())
 #     main()
 
             
-    
-def main():
-    game = Game()
-    game.run()
-    
-    
-    
-if __name__ == '__main__':
-    main()
 
 
 
